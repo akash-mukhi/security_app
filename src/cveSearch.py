@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 class CVESearch(object):
 
-    def __init__(self, base_url='https://cve.circl.lu', proxies=None,
+    def __init__(self, base_url='https://cve.circl.lu/', proxies=None,
                  timeout=None):
         self.base_url = base_url
         self.session = requests.Session()

@@ -3,7 +3,7 @@ import paramiko
 
 class ssh_conncet():
     nbytes = 4096
-    hostname = '10.193.231.237'
+    hostname = '10.193.57.131'
     port = 22
     input_username = 'root'
     input_password = 'netapp1!'
@@ -22,4 +22,6 @@ class ssh_conncet():
 
         finally:
             client.close()
+
+
 

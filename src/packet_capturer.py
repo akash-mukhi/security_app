@@ -2,33 +2,72 @@ import pyshark
 import time
 
 
-class PacketTracer():
+# class PacketTracer():
+#
+#     def get_network_packet(self):
+#         print('calling')
+#         # define interface
+#         networkInterface = "enp0s3"
+#
+#         # define capture object
+#         capture = pyshark.LiveCapture(interface=networkInterface)
+#
+#         print("listening on %s" % networkInterface)
+#
+#         for packet in capture.sniff_continuously(packet_count=10):
+#             # adjusted output
+#             try:
+#                 # get timestamp
+#                 localtime = time.asctime(time.localtime(time.time()))
+#
+#                 # get packet content
+#                 protocol = packet.transport_layer  # protocol type
+#                 src_addr = packet.ip.src  # source address
+#                 src_port = packet[protocol].srcport  # source port
+#                 dst_addr = packet.ip.dst  # destination address
+#                 dst_port = packet[protocol].dstport  # destination port
+#
+#                 # output packet info
+#                 print("%s IP %s:%s <-> %s:%s (%s)" % (localtime, src_addr, src_port, dst_addr, dst_port, protocol))
+#                 yield str("%s IP %s:%s <-> %s:%s (%s)" % (localtime, src_addr, src_port, dst_addr, dst_port, protocol))
+#             except AttributeError as e:
+#                 # ignore packets other than TCP, UDP and IPv4
+#                 print('did not find')
+#                 pass
+#             print(" ")
+#
+# print('ye')
+# p=PacketTracer()
+# p.get_network_packet()
+#
+def get_network_packet():
+    print('a')
+    print('calling')
+    # define interface
+    networkInterface = "enp0s3"
 
-    def get_network_packet(self):
-        # define interface
-        networkInterface = "enp0s3"
+    # define capture object
+    capture = pyshark.LiveCapture(interface=networkInterface)
 
-        # define capture object
-        capture = pyshark.LiveCapture(interface=networkInterface)
+    print("listening on %s" % networkInterface)
+    print(capture.sniff_continuously(packet_count=10))
+    for i in  capture.sniff_continuously(packet_count=10):
+        print(i)
 
-        print("listening on %s" % networkInterface)
+    # for packet in capture.sniff_continuously(packet_count=10):
+    #     # adjusted output
+    #     localtime = time.asctime(time.localtime(time.time()))
+    #
+    #     # get packet content
+    #     protocol = packet.transport_layer  # protocol type
+    #     src_addr = packet.ip.src  # source address
+    #     src_port = packet[protocol].srcport  # source port
+    #     dst_addr = packet.ip.dst  # destination address
+    #     dst_port = packet[protocol].dstport  # destination port
+    #
+    #     # output packet info
+    #     print("%s IP %s:%s <-> %s:%s (%s)" % (localtime, src_addr, src_port, dst_addr, dst_port, protocol))
+    #     yield str("%s IP %s:%s <-> %s:%s (%s)" % (localtime, src_addr, src_port, dst_addr, dst_port, protocol))
 
-        for packet in capture.sniff_continuously(packet_count=10):
-            # adjusted output
-            try:
-                # get timestamp
-                localtime = time.asctime(time.localtime(time.time()))
 
-                # get packet content
-                protocol = packet.transport_layer  # protocol type
-                src_addr = packet.ip.src  # source address
-                src_port = packet[protocol].srcport  # source port
-                dst_addr = packet.ip.dst  # destination address
-                dst_port = packet[protocol].dstport  # destination port
-
-                # output packet info
-                print("%s IP %s:%s <-> %s:%s (%s)" % (localtime, src_addr, src_port, dst_addr, dst_port, protocol))
-            except AttributeError as e:
-                # ignore packets other than TCP, UDP and IPv4
-                pass
-            print(" ")
+get_network_packet()

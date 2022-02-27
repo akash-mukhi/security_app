@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 import ssh_connect
-import vulneribility_finder
-from pycvesearch import CVESearch
+
+# import packet_capturer
 
 app = Flask(__name__)
 
@@ -40,7 +40,58 @@ def get_all_pods():
         return jsonify(data)
 
 
+# @app.route('/Getpackets', methods=['GET'])
+# def get_packets():
+#     if request.method == 'GET':
+#         ssh = ssh_connect.ssh_conncet()
+#         packet=packet_capturer.PacketTracer()
+#         data = packet.get_network_packet()
+#         return jsonify(data)
+
+
+@app.route('/GetAllDeployment', methods=['GET'])
+def get_all_deployment():
+    if request.method == 'GET':
+        ssh = ssh_connect.ssh_conncet()
+        data = ssh.run_command_to_sde_machine('kubectl get deployment --all-namespaces -o json')
+
+        return jsonify(data)
+
+
+def create_all_deployment_file():
+    out = []
+    buff = []
+    ssh = ssh_connect.ssh_conncet()
+    data = ssh.run_command_to_sde_machine('kubectl get deployment | awk \'{print $1}\'')
+    print(data)
+    for c in data:
+        if c == '\n':
+            out.append(''.join(buff))
+            buff = []
+        else:
+            buff.append(c)
+    else:
+        if buff:
+            out.append(''.join(buff))
+    print(out)
+    out= out[1:]
+    for i in out:
+        ssh.run_command_to_sde_machine('kubectl get deployment cloud-volumes-infrastructure -o yaml --export  > /tmp/sharma/{}.yaml'.format(i))
+    print('Creation Done')
+
+
+@app.route('/GetDeploymentInfo', methods=['GET'])
+def get_kube_sec_info():
+    ssh =ssh_connect.ssh_conncet()
+    name='meteorqloud.yaml'
+    data= ssh.run_command_to_sde_machine('curl -sSX POST --data-binary @/tmp/sharma/{} http://localhost:8080/scan'.format(name))
+    print(data)
+    return jsonify(data)
+
 
 # driver function
 if __name__ == '__main__':
+    # create_all_deployment_file()
     app.run(debug=True)
+
+# पृशान्त शर्मा
