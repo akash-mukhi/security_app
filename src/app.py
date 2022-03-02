@@ -92,6 +92,4 @@ def get_kube_sec_info():
 # driver function
 if __name__ == '__main__':
     # create_all_deployment_file()
-    app.run(debug=True)
-
-# पृशान्त शर्मा
+    app.run(host="0.0.0.0", port=5000)
